@@ -1,0 +1,35 @@
+name: IPSW Operations
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  download-and-diff:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up IPSW
+      run: |
+        brew install ipsw
+        mkdir diffs
+
+    - name: Download IPSW 22B83
+      run: ipsw download ipsw --device iPhone17,3 -b 22B83
+
+    - name: Download IPSW 22A3370
+      run: ipsw download ipsw --device iPhone17,3 -b 22A3370
+
+    - name: Diff IPSW files
+      run: ipsw diff iPhone17,3_18.0.1_22A3370_Restore.ipsw iPhone17,3_18.1_22B83_Restore.ipsw -V > diffs/iPhone17,3_18.0.1_22A3370-iPhone17,3_18.1_22B83.ipsw.diff.md
+
+    - name: Upload diffs
+      uses: actions/upload-artifact@v2
+      with:
+        name: ipsw-diffs
+        path: diffs/iPhone17,3_18.0.1_22A3370-iPhone17,3_18.1_22B83.ipsw.diff.md
