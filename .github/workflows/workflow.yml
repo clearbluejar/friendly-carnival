@@ -29,7 +29,7 @@ jobs:
       run: ipsw diff iPhone17,3_18.0.1_22A3370_Restore.ipsw iPhone17,3_18.1_22B83_Restore.ipsw -V > diffs/iPhone17,3_18.0.1_22A3370-iPhone17,3_18.1_22B83.ipsw.diff.md
 
     - name: Upload diffs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ipsw-diffs
         path: diffs/iPhone17,3_18.0.1_22A3370-iPhone17,3_18.1_22B83.ipsw.diff.md
